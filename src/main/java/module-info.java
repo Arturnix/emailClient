@@ -5,4 +5,6 @@ module com.emailclientjavafx.emailclient {
 
     opens com.emailclientjavafx.emailclient to javafx.fxml;
     exports com.emailclientjavafx.emailclient;
+    exports com.emailclientjavafx.emailclient.controller;
+    opens com.emailclientjavafx.emailclient.controller to javafx.fxml;
 }

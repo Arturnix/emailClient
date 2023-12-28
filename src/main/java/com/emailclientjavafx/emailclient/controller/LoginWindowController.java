@@ -1,4 +1,4 @@
-package com.emailclientjavafx.emailclient;
+package com.emailclientjavafx.emailclient.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
