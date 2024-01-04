@@ -3,6 +3,7 @@ package com.emailclientjavafx.emailclient.view;
 import com.emailclientjavafx.emailclient.EmailManager;
 import com.emailclientjavafx.emailclient.controller.BaseController;
 import com.emailclientjavafx.emailclient.controller.LoginWindowController;
+import com.emailclientjavafx.emailclient.controller.MainWindowController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,8 +23,20 @@ public class ViewFactory {
         System.out.println("Show login window called");
 
         BaseController controller = new LoginWindowController(emailManager, this, "LoginWindow.fxml");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(controller.getFxmlName()));
-        fxmlLoader.setController(controller);
+        initializeStage(controller);
+    }
+
+    public void showMainWindow() {
+        System.out.println("Show main window called");
+
+        BaseController controller = new MainWindowController(emailManager, this, "MainWindow.fxml");
+        initializeStage(controller);
+    }
+
+    private void initializeStage(BaseController baseController) {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(baseController.getFxmlName()));
+        fxmlLoader.setController(baseController);
         Parent parent;
 
         try {
