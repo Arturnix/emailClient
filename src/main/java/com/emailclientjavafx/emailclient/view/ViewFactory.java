@@ -11,12 +11,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ViewFactory {
     private EmailManager emailManager;
+    private ArrayList<Stage> activeStages;
 
     public ViewFactory(EmailManager emailManager) {
         this.emailManager = emailManager;
+        activeStages = new ArrayList<Stage>();
     }
 
     //view options handling:
@@ -77,10 +80,22 @@ public class ViewFactory {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
+        // add new stage to the list of active stages when new stage is initialized
+        activeStages.add(stage);
     }
 
     public void closeStage(Stage stageToClose) {
 
         stageToClose.close();
+        //remove closed stage from the list of active stages
+        activeStages.remove(stageToClose);
+    }
+
+    public void updateStyles() {
+        // I need here list of opened scenes/stages because styles - css applies to scenes
+        for(Stage stage : activeStages) {
+            Scene scene = stage.getScene();
+            //handle the css
+        }
     }
 }
