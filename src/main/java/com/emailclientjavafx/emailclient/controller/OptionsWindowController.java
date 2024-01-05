@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.net.URL;
@@ -29,12 +30,16 @@ public class OptionsWindowController extends BaseController implements Initializ
 
     @FXML
     void applyBtnAction() {
-
+        
+        viewFactory.setColorTheme(themePicker.getValue());
+        viewFactory.setFontSize(FontSize.values()[(int)(fontSizePicker.getValue())]);
     }
 
     @FXML
     void cancelBtnAction() {
 
+        Stage stage = (Stage) fontSizePicker.getScene().getWindow();
+        viewFactory.closeStage(stage);
     }
 
     //this method is called right after object is created
