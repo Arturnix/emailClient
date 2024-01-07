@@ -96,6 +96,15 @@ public class ViewFactory {
         for(Stage stage : activeStages) {
             Scene scene = stage.getScene();
             //handle the css
+            //before applying new css first I need to clear preset one
+            scene.getStylesheets().clear();
+            scene.getStylesheets().add(getClass().getResource(ColorTheme.getCssPath(colorTheme)).toExternalForm());
+            //from ViewFactory I have only font size and themeColor but I need to link it somehow with css files.
+            //so in these enums I need to make connection with appropriete css files (using switch statemens corressponding with options selected in options window.
+            //In enums create static method which return path to the css.
+            scene.getStylesheets().add(getClass().getResource(FontSize.getCssPath(fontSize)).toExternalForm());
+
+
         }
     }
 }
