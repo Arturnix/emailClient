@@ -27,4 +27,11 @@ public class MainWindowController extends BaseController {
     void optionsAction() {
         viewFactory.showOptionsWindow();
     }
+
+    @FXML
+    void addAccountAction() {
+        viewFactory.showLoginWindow();
+    }
+    // when I add new element on a layout in scene builder I need add it to the controller to make this item operable.
+
 }
