@@ -23,7 +23,7 @@ public class ViewFactory {
     }
 
     //view options handling:
-    private ColorTheme colorTheme = ColorTheme.DEFAULT;
+    private ColorTheme colorTheme = ColorTheme.DARK;
     private FontSize fontSize = FontSize.MEDIUM;
 
     public ColorTheme getColorTheme() {
@@ -103,8 +103,6 @@ public class ViewFactory {
             //so in these enums I need to make connection with appropriete css files (using switch statemens corressponding with options selected in options window.
             //In enums create static method which return path to the css.
             scene.getStylesheets().add(getClass().getResource(FontSize.getCssPath(fontSize)).toExternalForm());
-
-
         }
     }
 }
