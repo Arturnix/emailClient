@@ -17,7 +17,7 @@ public class EmailAccount {
         properties = new Properties(); //properties take from email provider
 
         properties.put("incomingHost", "imap.poczta.onet.pl"); //host to which will be connected my client; imap protocol - sending emails
-        properties.put("mail.store.protocol", "imaps");
+        properties.put("mail.store.protocol", "imap"); //imaps
         properties.put("mail.transport.protocol", "smtps"); //smtp(s) s as secure
         properties.put("mail.smtps.host", "smtp.poczta.onet.pl");
         properties.put("mail.smtps.auth", "true");

@@ -28,23 +28,33 @@ public class LoginWindowController extends BaseController {
 
     @FXML
     void loginButtonAction() {
+        System.out.println("LoginButtonAction");
 
         //if I have validation I can create email account/login
         if(fieldsAreValid()) {
             EmailAccount emailAccount = new EmailAccount(emailAddressField.getText(), passwordField.getText()); //getting login data from login window text fields
             LoginService loginService = new LoginService(emailAccount, emailManager);
-            EmailLoginResult emailLoginResult = loginService.login();
+            loginService.start(); //start background task
+            //make login window clickable when click login and do connection and login service in background
+            loginService.setOnSucceeded(event -> { //lambda expression
 
-            switch (emailLoginResult) {
-                case SUCCESS:
-                    System.out.println("Login successfull! " + emailAccount);
-            }
+                EmailLoginResult emailLoginResult = loginService.getValue();
+
+                switch (emailLoginResult) {
+                    case SUCCESS:
+                        System.out.println("Login successfull! " + emailAccount);
+                        viewFactory.showMainWindow();
+                        Stage stage = (Stage) errorLabel.getScene().getWindow();
+                        viewFactory.closeStage(stage);
+                        return;
+                }
+            });
+
+
+
         }
-        System.out.println("LoginButtonAction");
 
-        viewFactory.showMainWindow();
-        Stage stage = (Stage) errorLabel.getScene().getWindow();
-        viewFactory.closeStage(stage);
+
     }
 
     private boolean fieldsAreValid() {

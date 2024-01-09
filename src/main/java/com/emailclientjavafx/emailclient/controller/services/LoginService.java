@@ -4,10 +4,12 @@ package com.emailclientjavafx.emailclient.controller.services;
 import com.emailclientjavafx.emailclient.EmailManager;
 import com.emailclientjavafx.emailclient.controller.EmailLoginResult;
 import com.emailclientjavafx.emailclient.model.EmailAccount;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 
 import javax.mail.*;
 
-public class LoginService {
+public class LoginService extends Service<EmailLoginResult> {
 
     EmailAccount emailAccount;
     EmailManager emailManager;
@@ -17,7 +19,7 @@ public class LoginService {
         this.emailManager = emailManager;
     }
 
-    public EmailLoginResult login() { //here will be only 1 method. Login method. But I must indicate the result of the login operation! Use enum to indicate login result.
+    private EmailLoginResult login() { //here will be only 1 method. Login method. But I must indicate the result of the login operation! Use enum to indicate login result.
 
         Authenticator authenticator = new Authenticator() {
             @Override
@@ -30,7 +32,7 @@ public class LoginService {
         try {
             //access the session
             Session session = Session.getInstance(emailAccount.getProperties(), authenticator);
-            Store store = session.getStore("imaps");
+            Store store = session.getStore("imap"); //imaps
             //connect with this store
             store.connect(emailAccount.getProperties().getProperty("incomingHost"),
                     emailAccount.getAddress(),
@@ -53,5 +55,15 @@ public class LoginService {
 
         return EmailLoginResult.SUCCESS;
 
+    }
+
+    @Override
+    protected Task<EmailLoginResult> createTask() {
+        return new Task<EmailLoginResult>() {
+            @Override
+            protected EmailLoginResult call() throws Exception {
+                return login();
+            }
+        };
     }
 }
