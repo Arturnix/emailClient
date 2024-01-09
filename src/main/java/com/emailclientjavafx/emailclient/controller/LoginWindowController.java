@@ -33,12 +33,12 @@ public class LoginWindowController extends BaseController {
         //if I have validation I can create email account/login
         if(fieldsAreValid()) {
             EmailAccount emailAccount = new EmailAccount(emailAddressField.getText(), passwordField.getText()); //getting login data from login window text fields
-            LoginService loginService = new LoginService(emailAccount, emailManager);
+            LoginService loginService = new LoginService(emailAccount, emailManager); //create service
             loginService.start(); //start background task
             //make login window clickable when click login and do connection and login service in background
-            loginService.setOnSucceeded(event -> { //lambda expression
+            loginService.setOnSucceeded(event -> { //lambda expression; called when succeeded(task state succeeded)
 
-                EmailLoginResult emailLoginResult = loginService.getValue();
+                EmailLoginResult emailLoginResult = loginService.getValue(); //get value from the service
 
                 switch (emailLoginResult) {
                     case SUCCESS:
@@ -46,6 +46,14 @@ public class LoginWindowController extends BaseController {
                         viewFactory.showMainWindow();
                         Stage stage = (Stage) errorLabel.getScene().getWindow();
                         viewFactory.closeStage(stage);
+                        return;
+                    case FAILED_BY_CREDENTIALS:
+                        errorLabel.setText("invalid credentials!");
+                        return;
+                    case FAILED_BY_UNEXPECTED_ERROR:
+                        errorLabel.setText("unexpected error!");
+                        return;
+                    default:
                         return;
                 }
             });

@@ -38,6 +38,7 @@ public class LoginService extends Service<EmailLoginResult> {
                     emailAccount.getAddress(),
                     emailAccount.getPassword()); //put incoming host here
             emailAccount.setStore(store); //using to get emails
+            emailManager.addEmailAccount(emailAccount);
 
         } catch(javax.mail.NoSuchProviderException e) {
             e.printStackTrace();
