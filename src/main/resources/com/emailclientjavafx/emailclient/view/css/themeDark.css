@@ -7,8 +7,12 @@
    -fx-font-size: 16pt;
 }
 
-Button, Label, ChoiceBox, Slider {
+Button, Label, ChoiceBox, Slider, TextField, PasswordField {
     -fx-text-fill: white;
+}
+
+#errorLabel {
+    -fx-text-fill: red;
 }
 
 Button {
@@ -19,7 +23,7 @@ Button:hover {
     -fx-background-color: #616c87;
 }
 
-ChoiceBox >* {
+ChoiceBox >*, TextField, PasswordField {
     -fx-background-color: #353b4a;
 }
 
