@@ -43,7 +43,9 @@ public class LoginWindowController extends BaseController {
                 switch (emailLoginResult) {
                     case SUCCESS:
                         System.out.println("Login successfull! " + emailAccount);
-                        viewFactory.showMainWindow();
+                        if(!viewFactory.isMainViewInitialized()) { //to prevent duplicate main view window when add new account in this view
+                            viewFactory.showMainWindow();
+                        }
                         Stage stage = (Stage) errorLabel.getScene().getWindow();
                         viewFactory.closeStage(stage);
                         return;
