@@ -1,6 +1,7 @@
 package com.emailclientjavafx.emailclient;
 
 import com.emailclientjavafx.emailclient.model.EmailAccount;
+import com.emailclientjavafx.emailclient.model.EmailTreeItem;
 import javafx.scene.control.TreeItem;
 
 public class EmailManager {
@@ -8,11 +9,11 @@ public class EmailManager {
     //Folder handling:
     //root
 
-    private TreeItem<String> foldersRoot = new TreeItem<String>(""); //no value, it is just a placeholder
+    private EmailTreeItem<String> foldersRoot = new EmailTreeItem<>(""); //no value, it is just a placeholder
 
 
     //pass it to the main window controller
-    public TreeItem<String> getFoldersRoot() {
+    public EmailTreeItem<String> getFoldersRoot() {
         return foldersRoot;
     }
 
