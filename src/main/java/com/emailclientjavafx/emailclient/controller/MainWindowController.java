@@ -18,8 +18,8 @@ public class MainWindowController extends BaseController implements Initializabl
     private WebView emailWebView;
 
     @FXML
-    private TableView<?> emailsTableView;
-
+    private TableView<?> emailsTableView; //so to display email messages I need data structure which is supported by table view to display them correctly. Java class bean - holds data that will be displayed.
+    //TableView supports objects properties instead of objects. Instead of String type I use SimpleStringProperty.
     @FXML
     private TreeView<String> emailsTreeView;
 
