@@ -35,13 +35,19 @@ public class FetchFoldersService extends Service<Void> { //as return type of Ser
         handleFolders(folders, foldersRoot);
     }
 
-    private void handleFolders(Folder[] folders, EmailTreeItem<String> foldersRoot) {
+    private void handleFolders(Folder[] folders, EmailTreeItem<String> foldersRoot) throws MessagingException {
         //iterate through the folders list
         for(Folder folder : folders) {
             //create email tree item from it
             EmailTreeItem<String> emailTreeItem = new EmailTreeItem<String>(folder.getName());
             //add it to the folder root
             foldersRoot.getChildren().add(emailTreeItem);
+            //list all the folders from email account to be visibile in email tree view as expanded
+            foldersRoot.setExpanded(true);
+            if(folder.getType() == Folder.HOLDS_FOLDERS) { //czy wewnatrz tego folderu sa inne foldery
+                Folder[] subFolders = folder.list();
+                handleFolders(subFolders, emailTreeItem); //recursive
+            }
         }
     }
 
