@@ -13,6 +13,7 @@ public class EmailTreeItem<String> extends TreeItem<String> {
 
     private String name;
     private ObservableList<EmailMessage> emailMessages;
+    private int unreadMessagesCount; //indicates number of unread messages. To display number of unread messages in folders.
 
     //I will use this tree item instead of regular tree item
     public EmailTreeItem(String name) {
@@ -35,7 +36,23 @@ public class EmailTreeItem<String> extends TreeItem<String> {
                 message
         );
         emailMessages.add(emailMessage);
+        if(!messageIsRead) {
+            incrementMessagesCount();
+        }
         System.out.println("added to " + name + " " + message.getSubject());
+    }
+
+    public void incrementMessagesCount() {
+        unreadMessagesCount++; //everytime it increments I need to update name
+        updateName();
+    }
+
+    private void updateName() {
+        if(unreadMessagesCount > 0) {
+            this.setValue((String)(name + "(" + unreadMessagesCount + ")"));
+        } else {
+            this.setValue(name);
+        }
     }
 
 }
