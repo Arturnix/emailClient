@@ -22,6 +22,10 @@ public class EmailTreeItem<String> extends TreeItem<String> {
         this.emailMessages = FXCollections.observableArrayList(); //ObservableList is an interface so in the constructor I need helper class FXCollections. It generates list.
     }
 
+    public ObservableList<EmailMessage> getEmailMessages() {
+        return emailMessages;
+    }
+
     //method to get messages and use in java fx program.
     public void addEmail(Message message) throws MessagingException {
         boolean messageIsRead = message.getFlags().contains(Flags.Flag.SEEN);

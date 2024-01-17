@@ -9,4 +9,5 @@ module com.emailclientjavafx.emailclient {
     exports com.emailclientjavafx.emailclient;
     exports com.emailclientjavafx.emailclient.controller;
     opens com.emailclientjavafx.emailclient.controller to javafx.fxml;
+    opens com.emailclientjavafx.emailclient.model; //to display email messages in tableView
 }
