@@ -12,7 +12,7 @@ public class EmailMessage {
     private SimpleStringProperty subject; //because TableView supports SimpleViewProperty not objects like String.
     private SimpleStringProperty sender;
     private SimpleStringProperty recipient;
-    private SimpleIntegerProperty size;
+    private SimpleObjectProperty<SizeInteger> size; //in < > I type what is the type of provided data/object
     private SimpleObjectProperty<Date> date;
     private boolean isRead;
     private Message message;
@@ -22,7 +22,7 @@ public class EmailMessage {
         this.subject = new SimpleStringProperty(subject);
         this.sender = new SimpleStringProperty(sender);
         this.recipient = new SimpleStringProperty(recipient);
-        this.size = new SimpleIntegerProperty(size);
+        this.size = new SimpleObjectProperty<SizeInteger>(new SizeInteger(size)); //this is ObjectType and I have separate class for it and constructor so I need to pass it to the constructor in that way
         this.date = new SimpleObjectProperty<Date>(date);
         this.isRead = isRead;
         this.message = message;
@@ -39,7 +39,7 @@ public class EmailMessage {
     public String getRecipient() {
         return this.recipient.get();
     }
-    public Integer getSize() {
+    public SizeInteger getSize() {
         return this.size.get();
     }
     public Date getDate() {
