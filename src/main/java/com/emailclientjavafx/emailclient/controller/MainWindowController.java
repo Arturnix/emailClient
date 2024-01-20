@@ -1,6 +1,7 @@
 package com.emailclientjavafx.emailclient.controller;
 
 import com.emailclientjavafx.emailclient.EmailManager;
+import com.emailclientjavafx.emailclient.controller.services.MessageRendererService;
 import com.emailclientjavafx.emailclient.model.EmailMessage;
 import com.emailclientjavafx.emailclient.model.EmailTreeItem;
 import com.emailclientjavafx.emailclient.model.SizeInteger;
@@ -42,6 +43,8 @@ public class MainWindowController extends BaseController implements Initializabl
     @FXML
     private TableColumn<EmailMessage, Date> dateCol;
 
+    private MessageRendererService messageRendererService;
+
     public MainWindowController(EmailManager emailManager, ViewFactory viewFactory, String fxmlName) {
         super(emailManager, viewFactory, fxmlName);
     }
@@ -64,6 +67,23 @@ public class MainWindowController extends BaseController implements Initializabl
         setUpEmailsTableView();
         setUpFolderSelection();
         setUpBoldRows();
+        setUpMessageRendererService();
+        setUpMessageSelection();
+    }
+
+    private void setUpMessageSelection() {
+        emailsTableView.setOnMouseClicked(event-> {
+            EmailMessage emailMessage = emailsTableView.getSelectionModel().getSelectedItem();
+            if(emailMessage != null) {
+                messageRendererService.setEmailMessage(emailMessage);
+                messageRendererService.restart(); //use restart method because start method can be used only once.
+                //so if I call start, when I call this method twice there will be an error
+            }
+        });
+    }
+
+    private void setUpMessageRendererService() {
+       messageRendererService = new MessageRendererService(emailWebView.getEngine()); //only initializing
     }
 
     private void setUpBoldRows() {
