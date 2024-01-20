@@ -1,6 +1,6 @@
 package com.emailclientjavafx.emailclient.model;
 
-public class SizeInteger {
+public class SizeInteger implements Comparable<SizeInteger>{
 
     //toString() method is called when I see data in table view
     private int size;
@@ -10,7 +10,7 @@ public class SizeInteger {
     }
 
     //so I need to overwrite toString() method
-
+    //by default, size is sorted by string value not by size - use interface comparable. By default Integer class implements Comparable. So for SizeInteger I need to implelemnts Comparable interface.
     @Override
     public String toString() {
         if(size <= 0) {
@@ -21,6 +21,17 @@ public class SizeInteger {
             return size / 1024 + " kB";
         } else {
             return size / 1048576 + " MB";
+        }
+    }
+
+    @Override
+    public int compareTo(SizeInteger o) { //depend on sizes, comparison returns -1, 0, 1
+        if(size > o.size) { //size - current size
+            return 1;
+        } else if(o.size > size) {
+            return -1;
+        } else {
+            return 0;
         }
     }
 }
