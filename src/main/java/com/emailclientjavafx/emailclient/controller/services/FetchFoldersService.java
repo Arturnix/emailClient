@@ -7,15 +7,20 @@ import javafx.concurrent.Task;
 import javax.mail.Folder;
 import javax.mail.MessagingException;
 import javax.mail.Store;
+import javax.mail.event.MessageCountEvent;
+import javax.mail.event.MessageCountListener;
+import java.util.List;
 
 public class FetchFoldersService extends Service<Void> { //as return type of Service class I can use void so it doest return anything
 
     private Store store; //starting point of getting emails; starting point for the logic
     private EmailTreeItem<String> foldersRoot;
+    private List<Folder> folderList;
 
-    public FetchFoldersService(Store store, EmailTreeItem<String> foldersRoot) {
+    public FetchFoldersService(Store store, EmailTreeItem<String> foldersRoot, List<Folder> folderList) {
         this.store = store;
         this.foldersRoot = foldersRoot;
+        this.folderList = folderList;
     }
 
     @Override
@@ -39,6 +44,7 @@ public class FetchFoldersService extends Service<Void> { //as return type of Ser
     private void handleFolders(Folder[] folders, EmailTreeItem<String> foldersRoot) throws MessagingException {
         //iterate through the folders list
         for(Folder folder : folders) {
+            folderList.add(folder); //to make dynamic action of updating messages list when new is added or removed
             //create email tree item from it
             EmailTreeItem<String> emailTreeItem = new EmailTreeItem<String>(folder.getName());
             //add it to the folder root
@@ -46,11 +52,26 @@ public class FetchFoldersService extends Service<Void> { //as return type of Ser
             //list all the folders from email account to be visibile in email tree view as expanded
             foldersRoot.setExpanded(true);
             fetchMessagesOnFolder(folder, emailTreeItem); //get email messages for each folder.
+            addMessageListenerToFolder(folder, emailTreeItem);//add listener to update email list when emails are received while prgoram is running
             if(folder.getType() == Folder.HOLDS_FOLDERS) { //czy wewnatrz tego folderu sa inne foldery
                 Folder[] subFolders = folder.list();
                 handleFolders(subFolders, emailTreeItem); //recursive
             }
         }
+    }
+
+    private void addMessageListenerToFolder(Folder folder, EmailTreeItem<String> emailTreeItem) {
+        folder.addMessageCountListener(new MessageCountListener() { //anonymous class with 2 methods
+            @Override
+            public void messagesAdded(MessageCountEvent messageCountEvent) { //I need to add folder updater service to make it work
+                System.out.println("Message added event: " + messageCountEvent);
+            }
+
+            @Override
+            public void messagesRemoved(MessageCountEvent messageCountEvent) {
+                System.out.println("Message removed event: " + messageCountEvent);
+            }
+        });
     }
 
     private void fetchMessagesOnFolder(Folder folder, EmailTreeItem<String> emailTreeItem) { //to get messages for folders, I will create separate service for each folder.
