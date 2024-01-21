@@ -72,7 +72,26 @@ public class EmailManager {
             selectedMessage.getMessage().setFlag(Flags.Flag.SEEN, true);
             selcetedFolder.decrementMessagesCount();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void setUnread() {
+        try {
+            selectedMessage.setRead(false);
+            selectedMessage.getMessage().setFlag(Flags.Flag.SEEN, false); //set to false also on email server side
+            selcetedFolder.incrementMessagesCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteSelectedMessage() {
+        try {
+            selectedMessage.getMessage().setFlag(Flags.Flag.DELETED, true); //It says to server, yes - true, my message (selected) was deleted
+            selcetedFolder.getEmailMessages().remove(selectedMessage); //remove deleted message from the folder
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
