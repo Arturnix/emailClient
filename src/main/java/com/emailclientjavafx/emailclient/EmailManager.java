@@ -3,14 +3,36 @@ package com.emailclientjavafx.emailclient;
 import com.emailclientjavafx.emailclient.controller.services.FetchFoldersService;
 import com.emailclientjavafx.emailclient.controller.services.FolderUpdaterService;
 import com.emailclientjavafx.emailclient.model.EmailAccount;
+import com.emailclientjavafx.emailclient.model.EmailMessage;
 import com.emailclientjavafx.emailclient.model.EmailTreeItem;
 import javafx.scene.control.TreeItem;
 
+import javax.mail.Flags;
 import javax.mail.Folder;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmailManager {
+
+    //EmailManager must know which folder and which message is selected to mark it as read and update unread messages counter in selected folder
+    private EmailMessage selectedMessage;
+    private EmailTreeItem<String> selcetedFolder;
+
+    public EmailMessage getSelectedMessage() {
+        return selectedMessage;
+    }
+
+    public void setSelectedMessage(EmailMessage selectedMessage) {
+        this.selectedMessage = selectedMessage;
+    }
+
+    public EmailTreeItem<String> getSelcetedFolder() {
+        return selcetedFolder;
+    }
+
+    public void setSelcetedFolder(EmailTreeItem<String> selcetedFolder) {
+        this.selcetedFolder = selcetedFolder;
+    }
 
     private FolderUpdaterService folderUpdaterService;
 
@@ -42,5 +64,15 @@ public class EmailManager {
         FetchFoldersService fetchFoldersService = new FetchFoldersService(emailAccount.getStore(), treeItem, folderList);
         fetchFoldersService.start();
         foldersRoot.getChildren().add(treeItem);
+    }
+
+    public void setRead() {
+        try {
+            selectedMessage.setRead(true);
+            selectedMessage.getMessage().setFlag(Flags.Flag.SEEN, true);
+            selcetedFolder.decrementMessagesCount();
+        } catch (Exception e) {
+
+        }
     }
 }

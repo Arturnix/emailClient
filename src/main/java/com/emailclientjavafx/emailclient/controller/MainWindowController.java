@@ -75,6 +75,11 @@ public class MainWindowController extends BaseController implements Initializabl
         emailsTableView.setOnMouseClicked(event-> {
             EmailMessage emailMessage = emailsTableView.getSelectionModel().getSelectedItem();
             if(emailMessage != null) {
+                emailManager.setSelectedMessage(emailMessage); //selected message is this message, the one I selected. Inform application that this message is selected
+                if(!emailMessage.isRead()) {
+                    emailManager.setRead();
+                }
+                emailManager.setSelectedMessage(emailMessage); //inform application that this message is selected
                 messageRendererService.setEmailMessage(emailMessage);
                 messageRendererService.restart(); //use restart method because start method can be used only once.
                 //so if I call start, when I call this method twice there will be an error
@@ -114,6 +119,7 @@ public class MainWindowController extends BaseController implements Initializabl
             EmailTreeItem<String> item = (EmailTreeItem<String>)emailsTreeView.getSelectionModel().getSelectedItem(); //what happen when I click on the link in tree view
 
             if(item != null) {//not to have nullPointerException if I click outside the link to select folder
+                emailManager.setSelcetedFolder(item);
                 emailsTableView.setItems(item.getEmailMessages()); //get email messages to display in table view from selected folder
             }
 
