@@ -5,6 +5,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
 import javax.mail.Folder;
+import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Store;
 import javax.mail.event.MessageCountEvent;
@@ -64,7 +65,16 @@ public class FetchFoldersService extends Service<Void> { //as return type of Ser
         folder.addMessageCountListener(new MessageCountListener() { //anonymous class with 2 methods
             @Override
             public void messagesAdded(MessageCountEvent messageCountEvent) { //I need to add folder updater service to make it work
-                System.out.println("Message added event: " + messageCountEvent);
+               for(int i = 0; i < messageCountEvent.getMessages().length; i++) { //After 5000 ms of sleep for thread it can be received more than 1 new messages so I need to put them into list so I can iterate through it
+                   try {
+                       Message message = folder.getMessage(folder.getMessageCount() - i); //messages are in folder
+                       emailTreeItem.addEmailToTop(message);
+                   } catch (MessagingException e) {
+                       e.printStackTrace();
+                       throw new RuntimeException(e);
+                   }
+
+               }
             }
 
             @Override

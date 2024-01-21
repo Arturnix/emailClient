@@ -28,6 +28,16 @@ public class EmailTreeItem<String> extends TreeItem<String> {
 
     //method to get messages and use in java fx program.
     public void addEmail(Message message) throws MessagingException {
+        EmailMessage emailMessage = fetchMessage(message);
+        emailMessages.add(emailMessage);
+    }
+
+    public void addEmailToTop(Message message) throws MessagingException{
+        EmailMessage emailMessage = fetchMessage(message);
+        emailMessages.add(0, emailMessage); //index 0 means the top of the list
+    }
+
+    private EmailMessage fetchMessage(Message message) throws MessagingException {
         boolean messageIsRead = message.getFlags().contains(Flags.Flag.SEEN);
         //construct email message
         EmailMessage emailMessage = new EmailMessage(
@@ -39,11 +49,10 @@ public class EmailTreeItem<String> extends TreeItem<String> {
                 messageIsRead,
                 message
         );
-        emailMessages.add(emailMessage);
         if(!messageIsRead) {
             incrementMessagesCount();
         }
-        System.out.println("added to " + name + " " + message.getSubject());
+        return emailMessage;
     }
 
     public void incrementMessagesCount() {
