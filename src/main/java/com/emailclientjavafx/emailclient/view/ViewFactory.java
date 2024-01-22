@@ -1,10 +1,7 @@
 package com.emailclientjavafx.emailclient.view;
 
 import com.emailclientjavafx.emailclient.EmailManager;
-import com.emailclientjavafx.emailclient.controller.BaseController;
-import com.emailclientjavafx.emailclient.controller.LoginWindowController;
-import com.emailclientjavafx.emailclient.controller.MainWindowController;
-import com.emailclientjavafx.emailclient.controller.OptionsWindowController;
+import com.emailclientjavafx.emailclient.controller.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -67,6 +64,13 @@ public class ViewFactory {
         System.out.println("Show options window called");
 
         BaseController controller = new OptionsWindowController(emailManager, this, "OptionsWindow.fxml");
+        initializeStage(controller);
+    }
+
+    public void showComposeMessageWindow() { //when I add new window I must let know ViewFactory to show this new window
+        System.out.println("Compose message window called");
+
+        BaseController controller = new ComposeMessageController(emailManager, this, "ComposeMessageWindow.fxml");
         initializeStage(controller);
     }
 
