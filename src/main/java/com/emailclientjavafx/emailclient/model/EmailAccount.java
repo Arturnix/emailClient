@@ -48,5 +48,8 @@ public class EmailAccount {
         this.store = store;
     }
 
-
+    @Override
+    public String toString() {
+        return address;
+    }
 }

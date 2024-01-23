@@ -5,6 +5,8 @@ import com.emailclientjavafx.emailclient.controller.services.FolderUpdaterServic
 import com.emailclientjavafx.emailclient.model.EmailAccount;
 import com.emailclientjavafx.emailclient.model.EmailMessage;
 import com.emailclientjavafx.emailclient.model.EmailTreeItem;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
 import javax.mail.Flags;
@@ -17,6 +19,12 @@ public class EmailManager {
     //EmailManager must know which folder and which message is selected to mark it as read and update unread messages counter in selected folder
     private EmailMessage selectedMessage;
     private EmailTreeItem<String> selcetedFolder;
+
+    private ObservableList<EmailAccount> emailAccounts = FXCollections.observableArrayList();
+
+    public ObservableList<EmailAccount> getEmailAccounts() {
+        return emailAccounts;
+    }
 
     public EmailMessage getSelectedMessage() {
         return selectedMessage;
@@ -59,6 +67,7 @@ public class EmailManager {
 
     public void addEmailAccount(EmailAccount emailAccount) {
 
+        emailAccounts.add(emailAccount);
         EmailTreeItem<String> treeItem = new EmailTreeItem<String>(emailAccount.getAddress());
        //iterate through my folders
         FetchFoldersService fetchFoldersService = new FetchFoldersService(emailAccount.getStore(), treeItem, folderList);
