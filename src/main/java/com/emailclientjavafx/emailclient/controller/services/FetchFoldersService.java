@@ -1,6 +1,7 @@
 package com.emailclientjavafx.emailclient.controller.services;
 
 import com.emailclientjavafx.emailclient.model.EmailTreeItem;
+import com.emailclientjavafx.emailclient.view.IconResolver;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
@@ -17,6 +18,8 @@ public class FetchFoldersService extends Service<Void> { //as return type of Ser
     private Store store; //starting point of getting emails; starting point for the logic
     private EmailTreeItem<String> foldersRoot;
     private List<Folder> folderList;
+
+    private IconResolver iconResolver = new IconResolver();
 
     public FetchFoldersService(Store store, EmailTreeItem<String> foldersRoot, List<Folder> folderList) {
         this.store = store;
@@ -48,6 +51,8 @@ public class FetchFoldersService extends Service<Void> { //as return type of Ser
             folderList.add(folder); //to make dynamic action of updating messages list when new is added or removed
             //create email tree item from it
             EmailTreeItem<String> emailTreeItem = new EmailTreeItem<String>(folder.getName());
+            //add icons to display for folders
+            emailTreeItem.setGraphic(iconResolver.getIconForFolder(folder.getName()));
             //add it to the folder root
             foldersRoot.getChildren().add(emailTreeItem);
             //list all the folders from email account to be visibile in email tree view as expanded
