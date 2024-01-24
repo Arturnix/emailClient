@@ -45,14 +45,12 @@ public class ViewFactory {
     }
 
     public void showLoginWindow() {
-        System.out.println("Show login window called");
 
         BaseController controller = new LoginWindowController(emailManager, this, "LoginWindow.fxml");
         initializeStage(controller);
     }
 
     public void showMainWindow() {
-        System.out.println("Show main window called");
 
         BaseController controller = new MainWindowController(emailManager, this, "MainWindow.fxml");
         initializeStage(controller);
@@ -61,14 +59,12 @@ public class ViewFactory {
     }
 
     public void showOptionsWindow() {
-        System.out.println("Show options window called");
 
         BaseController controller = new OptionsWindowController(emailManager, this, "OptionsWindow.fxml");
         initializeStage(controller);
     }
 
     public void showComposeMessageWindow() { //when I add new window I must let know ViewFactory to show this new window
-        System.out.println("Compose message window called");
 
         BaseController controller = new ComposeMessageController(emailManager, this, "ComposeMessageWindow.fxml");
         initializeStage(controller);
@@ -88,6 +84,7 @@ public class ViewFactory {
         }
 
         Scene scene = new Scene(parent);
+        updateStyle(scene);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
@@ -102,18 +99,25 @@ public class ViewFactory {
         activeStages.remove(stageToClose);
     }
 
-    public void updateStyles() {
+    public void updateAllStyles() {
         // I need here list of opened scenes/stages because styles - css applies to scenes
         for(Stage stage : activeStages) {
             Scene scene = stage.getScene();
+            updateStyle(scene);
             //handle the css
             //before applying new css first I need to clear preset one
-            scene.getStylesheets().clear();
-            scene.getStylesheets().add(getClass().getResource(ColorTheme.getCssPath(colorTheme)).toExternalForm());
+            //scene.getStylesheets().clear(); //scene. moved to updateStyle() method
+            //scene.getStylesheets().add(getClass().getResource(ColorTheme.getCssPath(colorTheme)).toExternalForm());
             //from ViewFactory I have only font size and themeColor but I need to link it somehow with css files.
             //so in these enums I need to make connection with appropriete css files (using switch statemens corressponding with options selected in options window.
             //In enums create static method which return path to the css.
-            scene.getStylesheets().add(getClass().getResource(FontSize.getCssPath(fontSize)).toExternalForm());
+            //scene.getStylesheets().add(getClass().getResource(FontSize.getCssPath(fontSize)).toExternalForm());
         }
+    }
+
+    private void updateStyle(Scene scene){
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add(getClass().getResource(ColorTheme.getCssPath(colorTheme)).toExternalForm());
+        scene.getStylesheets().add(getClass().getResource(FontSize.getCssPath(fontSize)).toExternalForm());
     }
 }
