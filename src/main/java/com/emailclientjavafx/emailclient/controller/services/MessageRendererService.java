@@ -63,12 +63,19 @@ public class MessageRendererService extends Service {
             //get multipart from message content
             Multipart multipart = (Multipart) message.getContent(); //cast because it returns an object
             //it contains array so I need to iterate through this object
-            for(int i = multipart.getCount()-1; i >= 0; i--) {
-                BodyPart bodyPart = multipart.getBodyPart(i);
-                String bodyPartContentType = bodyPart.getContentType();
-                if(isSimpleType(bodyPartContentType)) {
-                    stringBuffer.append(bodyPart.getContent().toString());
-                }
+            loadMultipart(multipart, stringBuffer);
+        }
+    }
+
+    private void loadMultipart(Multipart multipart, StringBuffer stringBuffer) throws MessagingException, IOException {
+        for(int i = multipart.getCount()-1; i >= 0; i--) {
+            BodyPart bodyPart = multipart.getBodyPart(i);
+            String bodyPartContentType = bodyPart.getContentType();
+            if(isSimpleType(bodyPartContentType)) {
+                stringBuffer.append(bodyPart.getContent().toString());
+            } else if(isMultipartType(bodyPartContentType)) { //recursion if there is miltipart i multipart
+                Multipart multipart2 = (Multipart) bodyPart.getContent(); //Cast because there is no generic java mail implementation
+                loadMultipart(multipart2, stringBuffer); //recursion
             }
         }
     }
