@@ -9,6 +9,7 @@ import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
 import java.io.IOException;
 
 public class MessageRendererService extends Service {
@@ -76,8 +77,17 @@ public class MessageRendererService extends Service {
             } else if(isMultipartType(bodyPartContentType)) { //recursion if there is miltipart i multipart
                 Multipart multipart2 = (Multipart) bodyPart.getContent(); //Cast because there is no generic java mail implementation
                 loadMultipart(multipart2, stringBuffer); //recursion
+            } else if(!isTextPlain(bodyPartContentType)) {
+                //here we get the attachments
+                MimeBodyPart mbp = (MimeBodyPart) bodyPart; //now this attachment I need to add to email message
+                emailMessage.addAttachment(mbp);
             }
         }
+    }
+
+    //attachement is not simple type, plain text nor multipart
+    private boolean isTextPlain(String contentType) {
+        return contentType.contains("TEXT/PLAIN");
     }
 
     private boolean isSimpleType(String contentType) {

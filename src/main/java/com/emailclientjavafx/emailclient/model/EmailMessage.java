@@ -5,7 +5,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import javax.mail.Message;
+import javax.mail.internet.MimeBodyPart;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EmailMessage {
 
@@ -16,6 +19,8 @@ public class EmailMessage {
     private SimpleObjectProperty<Date> date;
     private boolean isRead;
     private Message message;
+    private List<MimeBodyPart> attachmentList = new ArrayList<MimeBodyPart>();
+    private boolean hasAttachmenst = false;
 
     //constructor takes String as an arguments but then it converts it into SimpleStringProperty
     public EmailMessage(String subject, String sender, String recipient, int size, Date date, boolean isRead, Message message) {
@@ -53,6 +58,11 @@ public class EmailMessage {
     }
     public Message getMessage() {
         return this.message;
+    }
+
+    public void addAttachment(MimeBodyPart mbp) {
+        hasAttachmenst = true;
+        attachmentList.add(mbp);
     }
     //this data structure is ready to be displayed in java fx program
 }
