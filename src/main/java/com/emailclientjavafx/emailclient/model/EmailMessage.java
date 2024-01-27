@@ -33,6 +33,10 @@ public class EmailMessage {
         this.message = message;
     }
 
+    public boolean hasAttachments() {
+        return hasAttachmenst;
+    }
+
     //getters and setters also are made different
     //it need to be implemented in appropriate way (data structure) to be displayed in java FX
     public String getSubject() {
@@ -58,6 +62,10 @@ public class EmailMessage {
     }
     public Message getMessage() {
         return this.message;
+    }
+
+    public List<MimeBodyPart> getAttachmentsList() {
+        return attachmentList;
     }
 
     public void addAttachment(MimeBodyPart mbp) {
