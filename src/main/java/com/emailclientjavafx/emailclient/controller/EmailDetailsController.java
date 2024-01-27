@@ -15,12 +15,14 @@ import javafx.scene.web.WebView;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
+import java.awt.*;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EmailDetailsController extends BaseController implements Initializable {
 
-    private String LOCATION_OF_DOWNLOADS = System.getProperty("user.home") + "/Pobrane";
+    private String LOCATION_OF_DOWNLOADS = System.getProperty("user.name") + "/Downloads";
 
     @FXML
     private Label attachmentLabel;
@@ -56,8 +58,8 @@ public class EmailDetailsController extends BaseController implements Initializa
     }
 
     private void loadAttachemnts(EmailMessage emailMessage) {
-        if(emailMessage.hasAttachments()) {
-            for(MimeBodyPart mimeBodyPart : emailMessage.getAttachmentsList()) {
+        if (emailMessage.hasAttachments()) {
+            for (MimeBodyPart mimeBodyPart : emailMessage.getAttachmentsList()) {
                 AttachmentButton button = null;
                 try {
                     button = new AttachmentButton(mimeBodyPart);
@@ -86,6 +88,7 @@ public class EmailDetailsController extends BaseController implements Initializa
 
         private void downloadAttachment() { //it can be long going task so it is good idea to put it into another thread
 
+            colorBlue();
             Service service = new Service() {
                 @Override
                 protected Task createTask() {
@@ -99,6 +102,30 @@ public class EmailDetailsController extends BaseController implements Initializa
                 }
             };
             service.restart();
+            service.setOnSucceeded(e-> {
+                colorGreen();
+                this.setOnAction(e2 -> {
+                    File file = new File(downloadedFilePath);
+                    Desktop desktop = Desktop.getDesktop();
+                    if(file.exists()) {
+                        try {
+                            desktop.open(file);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                });
+            });
+        }
+
+        private void colorBlue() { //start downloading color button blue
+            this.setStyle("-fx-background-color: Blue");
+        }
+
+        private void colorGreen() { //color button green when download is completed
+            this.setStyle("-fx-background-color: Green");
         }
     }
 }
+
+
